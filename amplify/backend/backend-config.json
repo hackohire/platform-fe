@@ -1,0 +1,8 @@
+{
+	"auth": {
+		"platformfe981b7e29": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}
