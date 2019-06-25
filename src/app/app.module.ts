@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+
 
 
 @NgModule({
@@ -16,11 +16,9 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    SharedModule,
-    AmplifyAngularModule
+    SharedModule
   ],
   providers: [
-    AmplifyService
   ],
   bootstrap: [AppComponent]
 })

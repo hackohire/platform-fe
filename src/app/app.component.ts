@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AmplifyService } from 'aws-amplify-angular';
+import { Store, select } from '@ngrx/store';
+import { AppState } from './core/store/state/app.state';
+import { selectUserList, selectSelectedUser } from './core/store/selectors/user.selector';
+import { GetUsers, GetUserSuccess, GetUser } from './core/store/actions/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +41,14 @@ export class AppComponent implements OnInit {
       },
     ]
   };
-  constructor(private amplifyService: AmplifyService) {
+
+  users$ = this.store.pipe(select(selectUserList));
+  user$ = this.store.pipe(select(selectSelectedUser))
+
+  constructor(
+    private amplifyService: AmplifyService,
+    private store: Store<AppState>
+  ) {
 
 
 
@@ -52,6 +63,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(new GetUsers());
+
+    setInterval(() => {
+      this.store.dispatch(new GetUser('5d0c8a2386e7b800067b5664'));
+    }, 10000);
+    
     // this.amplifyService.auth();
   }
 }
