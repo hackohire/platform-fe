@@ -2,7 +2,7 @@ import { initialUserState, UserState } from '../state/user.state';
 import { UserActions, EUserActions } from '../actions/user.actions';
 
 export const userReducers = (
-    state= initialUserState,
+    state = initialUserState,
     action: UserActions
 ): UserState => {
     switch (action.type) {

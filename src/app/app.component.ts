@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from './core/store/state/app.state';
 import { selectUserList, selectSelectedUser } from './core/store/selectors/user.selector';
 import { GetUsers, GetUserSuccess, GetUser } from './core/store/actions/user.actions';
+import { CreateApplication } from './core/store/actions/application.action';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,6 @@ export class AppComponent implements OnInit {
   signUpConfig = {
     // header: 'My Customized Sign Up',
     hideAllDefaults: true,
-    defaultCountryCode: '91',
     signUpFields: [
       {
         label: 'Name',
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   };
 
   users$ = this.store.pipe(select(selectUserList));
-  user$ = this.store.pipe(select(selectSelectedUser))
+  user$ = this.store.pipe(select(selectSelectedUser));
 
   constructor(
     private amplifyService: AmplifyService,
@@ -64,11 +64,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetUsers());
+    // this.store.dispatch(new GetUser('5d147514e06f70245c3d70be'));
+    // this.store.dispatch(new CreateApplication({
+    //   name: 'S',
+    // }));
 
-    setInterval(() => {
-      this.store.dispatch(new GetUser('5d0c8a2386e7b800067b5664'));
-    }, 10000);
-    
+    setTimeout(() => {
+      this.store.dispatch(new GetUser('5d147514e06f70245c3d70be'));
+    }, 5000);
+
     // this.amplifyService.auth();
   }
 }
