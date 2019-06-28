@@ -13,35 +13,6 @@ import { CreateApplication } from './core/store/actions/application.action';
 })
 export class AppComponent implements OnInit {
   title = 'platform-fe';
-  usernameAttributes = 'email';
-  signUpConfig = {
-    // header: 'My Customized Sign Up',
-    hideAllDefaults: true,
-    signUpFields: [
-      {
-        label: 'Name',
-        key: 'name',
-        required: true,
-        displayOrder: 1,
-        type: 'string'
-      },
-      {
-        label: 'Email',
-        key: 'email',
-        required: true,
-        displayOrder: 2,
-        type: 'string',
-      },
-      {
-        label: 'Password',
-        key: 'password',
-        required: true,
-        displayOrder: 3,
-        type: 'password'
-      },
-    ]
-  };
-
   users$ = this.store.pipe(select(selectUserList));
   user$ = this.store.pipe(select(selectSelectedUser));
 

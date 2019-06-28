@@ -9,7 +9,8 @@ import {
   MatDialogModule,
   MatToolbarModule,
   MatChipsModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatSidenavModule,
 } from '@angular/material';
 import {MatTableModule} from '@angular/material/table';
 
@@ -27,7 +28,8 @@ import {MatTableModule} from '@angular/material/table';
     MatToolbarModule,
     MatChipsModule,
     MatDatepickerModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule
   ],
   exports: [
     MatFormFieldModule,
@@ -40,7 +42,8 @@ import {MatTableModule} from '@angular/material/table';
     MatToolbarModule,
     MatChipsModule,
     MatDatepickerModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule
   ]
 })
 export class MaterialModule {}

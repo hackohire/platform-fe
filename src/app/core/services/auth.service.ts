@@ -48,9 +48,10 @@ export class AuthService {
             // Once the user is signed In, Set the token in localstorage as "idToken"
             localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
             this.user = authState.user;
+
+            // Update set with Loggedin User
             this.store.dispatch(new CreateUser(this.user.attributes));
-            this.router.navigateByUrl(`/user/edit`);
-            console.log(this.user.name);
+            // this.router.navigateByUrl(`/user/edit`);
           }
           break;
 
