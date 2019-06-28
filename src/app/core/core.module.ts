@@ -17,6 +17,8 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { ApplicationEffects } from './store/effects/application.effects';
+import { MaterialModule } from './material.module';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [],
@@ -24,12 +26,13 @@ import { ApplicationEffects } from './store/effects/application.effects';
     CommonModule,
     HttpClientModule,
     AmplifyAngularModule,
-    StoreModule.forRoot(appReducesrs),
+    StoreModule.forRoot(appReducesrs()),
     EffectsModule.forRoot([UserEffects, ApplicationEffects]),
     StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     StoreDevtoolsModule.instrument(),
     ApolloModule,
     HttpLinkModule,
+    MaterialModule
   ],
   providers: [
     AuthService,
@@ -44,7 +47,7 @@ export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
 
     // Apollo Server Configuration
 
-    const http = httpLink.create({uri: 'http://localhost:3000/graphql'});
+    const http = httpLink.create({uri: environment.graphql_url});
 
     const authLink = new ApolloLink((operation, forward) => {
       // Get the authentication token from local storage if it exists

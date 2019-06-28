@@ -3,7 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
 import { switchMap, map, withLatestFrom, tap } from 'rxjs/operators/';
-import { GetUser, EUserActions, GetUsersSuccess, GetUsers, GetUserSuccess, CreateUser } from '../actions/user.actions';
+import { GetUser, EUserActions, GetUsersSuccess, GetUsers, GetUserSuccess, CreateUser, SetLoggedInUser } from '../actions/user.actions';
 import { AuthService } from '../../services/auth.service';
 import { of } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
@@ -39,8 +39,23 @@ export class UserEffects {
         ofType<CreateUser>(EUserActions.CreateUser),
         map(action => action.payload),
         switchMap((user) => this.userService.createUser(user)),
-        switchMap((user: User) => of(user))
+        switchMap((user: User) => of(new SetLoggedInUser(user)))
     );
+
+    @Effect()
+    updateUser$ = this.actions$.pipe(
+        ofType<CreateUser>(EUserActions.UpdateUser),
+        map(action => action.payload),
+        switchMap((user) => this.userService.updateUser(user)),
+        switchMap((user: User) => of(new SetLoggedInUser(user)))
+    );
+
+    // @Effect()
+    // setCurrentLoggedInUser$ = this.actions$.pipe(
+    //     ofType<SetLoggedInUser>(EUserActions.SetLoggedInUser),
+    //     map(action => action.payload),
+    //     switchMap((user: User) => of(user))
+    // );
 
     constructor(
         private actions$: Actions,

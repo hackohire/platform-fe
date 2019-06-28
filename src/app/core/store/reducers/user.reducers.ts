@@ -1,10 +1,10 @@
 import { initialUserState, UserState } from '../state/user.state';
 import { UserActions, EUserActions } from '../actions/user.actions';
 
-export const userReducers = (
+export function userReducers(
     state = initialUserState,
     action: UserActions
-): UserState => {
+): UserState {
     switch (action.type) {
         case EUserActions.GetUsersSuccess:
             return {
@@ -13,9 +13,15 @@ export const userReducers = (
             };
 
         case EUserActions.GetUserSuccess:
-            return{
+            return {
                 ...state,
                 selectedUser: action.payload
+            };
+
+        case EUserActions.SetLoggedInUser:
+            return {
+                ...state,
+                loggedInUser: action.payload
             };
 
         default:

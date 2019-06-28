@@ -4,7 +4,8 @@ import { AmplifyService } from 'aws-amplify-angular';
 import { UserService } from 'src/app/user/user.service';
 import { State, Store } from '@ngrx/store';
 import { AppState } from '../store/state/app.state';
-import { CreateUser } from '../store/actions/user.actions';
+import { CreateUser, SetLoggedInUser } from '../store/actions/user.actions';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -17,7 +18,8 @@ export class AuthService {
   constructor(
     private amplifyService: AmplifyService,
     private userService: UserService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
   ) {
 
     Hub.listen('auth',(data) => {
@@ -37,7 +39,7 @@ export class AuthService {
       // console.log(authState);
       // console.log(authState.user.signInUserSession.idToken.jwtToken);
       this.authStatus = authState.state;
-      this.signedIn = this.authStatus === 'signIn';
+      this.signedIn = this.authStatus === 'signedIn';
       switch (this.authStatus) {
         case 'signedIn':
           if (!authState.user) {
@@ -47,6 +49,7 @@ export class AuthService {
             localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
             this.user = authState.user;
             this.store.dispatch(new CreateUser(this.user.attributes));
+            this.router.navigateByUrl(`/user/edit`);
             console.log(this.user.name);
           }
           break;
@@ -56,6 +59,7 @@ export class AuthService {
 
         case 'signedOut':
           localStorage.removeItem('idToken');
+          this.store.dispatch(new SetLoggedInUser(null));
       }
     });
 

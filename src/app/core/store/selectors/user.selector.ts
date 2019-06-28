@@ -9,6 +9,11 @@ export const selectUserList = createSelector(
     (state: UserState) => state.users
 );
 
+export const selectLoggedInUser = createSelector(
+    selectUsers,
+    (state: UserState) => state.loggedInUser
+);
+
 export const selectSelectedUser = createSelector(
     selectUsers,
     (state: UserState) => state.selectedUser

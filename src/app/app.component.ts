@@ -63,15 +63,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new GetUsers());
+    // this.store.dispatch(new GetUsers());
     // this.store.dispatch(new GetUser('5d147514e06f70245c3d70be'));
     // this.store.dispatch(new CreateApplication({
     //   name: 'S',
     // }));
 
-    setTimeout(() => {
-      this.store.dispatch(new GetUser('5d147514e06f70245c3d70be'));
-    }, 5000);
+    // setTimeout(() => {
+    //   this.store.dispatch(new GetUser('5d147514e06f70245c3d70be'));
+    // }, 5000);
 
     // this.amplifyService.auth();
   }

@@ -10,7 +10,45 @@ import { User } from '../shared/models/user.model';
 })
 export class UserService {
 
-  constructor(private apollo: Apollo) {}
+  createUserQuery = gql`
+    mutation user($user: UserInput!) {
+      createUser(user: $user)
+      {
+        _id
+        name
+        email
+        linkedin_url
+        github_url
+        stackoverflow_url
+        location
+        currentJobDetails {
+          jobProfile
+          companyName
+          companyLocation
+        }
+      }
+    }`;
+
+  updateUserQuery = gql`
+    mutation user($user: UserInput!) {
+      updateUser(user: $user)
+      {
+        _id
+        name
+        email
+        linkedin_url
+        github_url
+        stackoverflow_url
+        location
+        currentJobDetails {
+          jobProfile
+          companyName
+          companyLocation
+        }
+      }
+    }`;
+
+  constructor(private apollo: Apollo) { }
 
   getUsers(): Observable<any> {
     return this.apollo.query(
@@ -26,7 +64,7 @@ export class UserService {
       }
     ).pipe(
       switchMap((d: any) => {
-        console.log('check', d)
+        console.log('check', d);
         return [d.data.getUsers];
       })
     );
@@ -37,14 +75,7 @@ export class UserService {
 
     return this.apollo.mutate(
       {
-        mutation: gql`
-          mutation createUser($user: UserInput!) {
-            createUser(user: $user)
-            {
-              _id
-              name
-            }
-          }`,
+        mutation: this.createUserQuery,
         variables: {
           'user': u,
         }
@@ -55,5 +86,22 @@ export class UserService {
       })
     );
     // return of({});
+  }
+
+  updateUser(u: User) {
+    console.log(u);
+
+    return this.apollo.mutate(
+      {
+        mutation: this.updateUserQuery,
+        variables: {
+          'user': u,
+        }
+      }
+    ).pipe(
+      switchMap((d: any) => {
+        return [d.data.updateUser];
+      })
+    );
   }
 }

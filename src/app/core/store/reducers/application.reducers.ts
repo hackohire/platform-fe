@@ -1,10 +1,10 @@
 import { initialApplicationState, ApplicationState } from '../state/application.state';
 import { ApplicationActions, EApplicationActions } from '../actions/application.action'
 
-export const applicationReducers = (
+export function applicationReducers(
     state = initialApplicationState,
     action: ApplicationActions
-): ApplicationState => {
+): ApplicationState {
     switch (action.type) {
         case EApplicationActions.CreateApplication:
             return {
@@ -17,7 +17,7 @@ export const applicationReducers = (
                 ...state,
                 applications: action.payload
             };
-            
+
         default:
             return state;
     }
