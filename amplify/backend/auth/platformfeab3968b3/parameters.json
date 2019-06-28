@@ -1,12 +1,12 @@
 {
-    "identityPoolName": "platformfe981b7e29_identitypool_981b7e29",
+    "identityPoolName": "platformfeab3968b3_identitypool_ab3968b3",
     "allowUnauthenticatedIdentities": false,
-    "lambdaLogPolicy": "platfo_981b7e29_lambda_log_policy",
-    "openIdLambdaRoleName": "platfo_981b7e29_openid_lambda_role",
-    "openIdRolePolicy": "platfo_981b7e29_openid_pass_role_policy",
-    "openIdLambdaIAMPolicy": "platfo_981b7e29_openid_lambda_iam_policy",
-    "openIdLogPolicy": "platfo_981b7e29_openid_lambda_log_policy",
-    "userPoolName": "platformfe981b7e29_userpool_981b7e29",
+    "lambdaLogPolicy": "platfo_ab3968b3_lambda_log_policy",
+    "openIdLambdaRoleName": "platfo_ab3968b3_openid_lambda_role",
+    "openIdRolePolicy": "platfo_ab3968b3_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "platfo_ab3968b3_openid_lambda_iam_policy",
+    "openIdLogPolicy": "platfo_ab3968b3_openid_lambda_log_policy",
+    "userPoolName": "platformfeab3968b3_userpool_ab3968b3",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -14,9 +14,9 @@
     "mfaTypes": [
         "SMS Text Message"
     ],
-    "roleName": "platfo981b7e29_sns-role",
-    "roleExternalId": "platfo981b7e29_role_external_id",
-    "policyName": "platfo981b7e29-sns-policy",
+    "roleName": "platfoab3968b3_sns-role",
+    "roleExternalId": "platfoab3968b3_role_external_id",
+    "policyName": "platfoab3968b3-sns-policy",
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
@@ -28,7 +28,7 @@
         "email",
         "name"
     ],
-    "userpoolClientName": "platfo981b7e29_app_client",
+    "userpoolClientName": "platfoab3968b3_app_client",
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -37,15 +37,15 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "mfaLambdaRole": "platfo981b7e29_totp_lambda_role",
-    "mfaLambdaLogPolicy": "platfo981b7e29_totp_lambda_log_policy",
-    "mfaPassRolePolicy": "platfo981b7e29_totp_pass_role_policy",
-    "mfaLambdaIAMPolicy": "platfo981b7e29_totp_lambda_iam_policy",
-    "userpoolClientLambdaRole": "platfo981b7e29_userpoolclient_lambda_role",
-    "userpoolClientLogPolicy": "platfo981b7e29_userpoolclient_lambda_log_policy",
-    "userpoolClientLambdaPolicy": "platfo981b7e29_userpoolclient_lambda_iam_policy",
+    "mfaLambdaRole": "platfoab3968b3_totp_lambda_role",
+    "mfaLambdaLogPolicy": "platfoab3968b3_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "platfoab3968b3_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "platfoab3968b3_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "platfoab3968b3_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "platfoab3968b3_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "platfoab3968b3_userpoolclient_lambda_iam_policy",
     "userpoolClientSetAttributes": false,
-    "resourceName": "platformfe981b7e29",
+    "resourceName": "platformfeab3968b3",
     "authSelections": "identityPoolAndUserPool",
     "authRoleName": {
         "Ref": "AuthRoleName"
