@@ -7,6 +7,8 @@ import { AppState } from 'src/app/core/store/state/app.state';
 import { selectLoggedInUser } from 'src/app/core/store/selectors/user.selector';
 import { UpdateUser } from 'src/app/core/store/actions/user.actions';
 import { AuthService } from 'src/app/core/services/auth.service';
+import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips/typings/chip-input';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,6 +17,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class UserProfileComponent implements OnInit {
 
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
   userProfileForm: FormGroup;
   loggedInUser: User;
   user$: Observable<User>;
@@ -23,7 +26,12 @@ export class UserProfileComponent implements OnInit {
     public authService: AuthService
   ) {
 
+    // if (this.loggedInUser && !this.loggedInUser.programming_languages) {
+    //   this.loggedInUser.programming_languages = [];
+    // }
+
     this.user$ = this.store.select(selectLoggedInUser);
+
     this.store.select(selectLoggedInUser).subscribe((u: User) => {
       console.log(u);
       this.loggedInUser = u;
@@ -36,6 +44,7 @@ export class UserProfileComponent implements OnInit {
           github_url: new FormControl(this.loggedInUser ? this.loggedInUser.github_url : ''),
           stackoverflow_url: new FormControl(this.loggedInUser ? this.loggedInUser.stackoverflow_url : ''),
           location: new FormControl(this.loggedInUser ? this.loggedInUser.location : ''),
+          programming_languages: new FormControl(this.loggedInUser ? this.loggedInUser.programming_languages : []),
           currentJobDetails: new FormGroup({
             jobProfile: new FormControl(this.loggedInUser && this.loggedInUser.currentJobDetails ?
               this.loggedInUser.currentJobDetails.jobProfile : ''),
@@ -45,7 +54,7 @@ export class UserProfileComponent implements OnInit {
               this.loggedInUser.currentJobDetails.companyLocation : '')
           }),
           _id: new FormControl(this.loggedInUser ? this.loggedInUser._id : '')
-    
+
         });
       }
     });
@@ -58,6 +67,25 @@ export class UserProfileComponent implements OnInit {
   updateUser(): void {
     console.log(this.userProfileForm.value);
     this.store.dispatch(new UpdateUser(this.userProfileForm.value));
+  }
+
+  addProgrammingLanguage(event: MatChipInputEvent) {
+    const input = event.input;
+    const value = event.value;
+    if ((value.trim() !== '')) {
+      this.loggedInUser.programming_languages.push(value);
+      this.userProfileForm.controls.programming_languages.markAsDirty();
+      input.value = '';
+    }
+  }
+
+  onRemoveProgrammingLanguage(email: any) {
+    const controller = this.userProfileForm.controls.programming_languages;
+    const index = this.loggedInUser.programming_languages.indexOf(email, 0);
+    if (index > -1) {
+      this.loggedInUser.programming_languages.splice(index, 1);
+    }
+    controller.markAsDirty();
   }
 
 }

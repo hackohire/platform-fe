@@ -26,6 +26,7 @@ export class UserService {
           companyName
           companyLocation
         }
+        programming_languages
       }
     }`;
 
@@ -45,6 +46,7 @@ export class UserService {
           companyName
           companyLocation
         }
+        programming_languages
       }
     }`;
 

@@ -10,7 +10,7 @@ export interface User {
     linkedin_url?: string;
     github_url?: string;
     currentJobDetails?: CurrentJobDetails;
-    programmingLanguages?: string[];
+    programming_languages?: string[];
 }
 
 interface CurrentJobDetails {

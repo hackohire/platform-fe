@@ -1,12 +1,12 @@
 <!-- <div> -->
-    
-  <form [formGroup]="userProfileForm" class="profile-form" *ngIf="(user$ | async) as user" (ngSubmit)="updateUser()">
+
+<form [formGroup]="userProfileForm" class="profile-form" *ngIf="(user$ | async) as user" (ngSubmit)="updateUser()">
     <mat-form-field class="field-full-width">
         <input matInput disabled formControlName="name" disabled placeholder="Name">
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-        <input matInput formControlName="email" disabled  placeholder="Email">
+        <input matInput formControlName="email" disabled placeholder="Email">
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
@@ -25,22 +25,38 @@
         <input matInput formControlName="location" placeholder="Current Location">
     </mat-form-field>
 
+    <mat-form-field class="field-full-width">
+        <mat-chip-list #programingLanguagesList>
+            <!--Iterate by array of data and display a chip for eavh value.-->
+            <mat-chip *ngFor="let lan of user?.programming_languages" removable (removed)="onRemoveProgrammingLanguage(lan)">
+                {{lan}}
+                <!--Icon that is used as a button when 'removable' set to true.-->
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Add Programming Languages" [matChipInputAddOnBlur]="true" [matChipInputFor]="programingLanguagesList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addProgrammingLanguage($event)">
+        </mat-chip-list>
+    </mat-form-field>
+
     <div formGroupName="currentJobDetails">
         <mat-form-field class="field-full-width">
-            <input matInput formControlName="jobProfile" [value]="user?.currentJobDetails?.jobProfile" placeholder="Current Job Profile">
+            <input matInput formControlName="jobProfile" [value]="user?.currentJobDetails?.jobProfile"
+                placeholder="Current Job Profile">
         </mat-form-field>
 
         <mat-form-field class="field-full-width">
-            <input matInput formControlName="companyName" [value]="user?.currentJobDetails?.companyName" placeholder="Company Name">
+            <input matInput formControlName="companyName" [value]="user?.currentJobDetails?.companyName"
+                placeholder="Company Name">
         </mat-form-field>
 
         <mat-form-field class="field-full-width">
-            <input matInput formControlName="companyLocation" [value]="user?.currentJobDetails?.companyLocation" placeholder="Company Location">
+            <input matInput formControlName="companyLocation" [value]="user?.currentJobDetails?.companyLocation"
+                placeholder="Company Location">
         </mat-form-field>
 
     </div>
 
     <button mat-raised-button color="primary">Update Profile</button>
 
-  </form>
+</form>
 <!-- </div> -->
