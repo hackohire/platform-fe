@@ -6,8 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SideNavbarComponent } from './side-navbar/side-navbar.component';
+import { SideNavbarComponent } from './core/side-navbar/side-navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 
 

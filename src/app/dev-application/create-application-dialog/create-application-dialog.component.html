@@ -1,0 +1,16 @@
+<form [formGroup]="createApplicationForm" class="profile-form" (ngSubmit)="createApplication()">
+    <mat-form-field class="field-full-width">
+        <input matInput disabled formControlName="name" placeholder="Application Name">
+    </mat-form-field>
+
+    <!-- <mat-form-field class="field-full-width">
+        <input matInput formControlName="appSecret" disabled placeholder="App Secret">
+    </mat-form-field> -->
+
+    <mat-form-field class="field-full-width">
+        <textarea matInput formControlName="description" disabled placeholder="Describe your application in few words."></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="createApplicationForm?.invalid">Create Application</button>
+
+</form>

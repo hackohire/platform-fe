@@ -7,6 +7,14 @@ const routes: Routes = [
     path: 'user',
     // canLoad: [AuthGuard],
     loadChildren: () => import('./user/user.module').then(module => module.UserModule)
+  },
+  {
+    path: 'application',
+    loadChildren: () => import('./dev-application/dev-application.module').then(module => module.DevApplicationModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
 

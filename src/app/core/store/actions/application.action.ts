@@ -14,7 +14,7 @@ export class CreateApplication implements Action {
 
 export class GetApplications implements Action {
     public readonly type = EApplicationActions.GetApplications;
-    constructor(public payload: Application[]) {}
+    constructor(public payload: string) {}
 }
 
 export class UpdateApplicationsList implements Action {

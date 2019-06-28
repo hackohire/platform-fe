@@ -6,12 +6,14 @@ import { State, Store } from '@ngrx/store';
 import { AppState } from '../store/state/app.state';
 import { CreateUser, SetLoggedInUser } from '../store/actions/user.actions';
 import { Router } from '@angular/router';
+import { selectLoggedInUser } from '../store/selectors/user.selector';
+import { User } from 'src/app/shared/models/user.model';
 
 
 @Injectable()
 export class AuthService {
   signedIn: boolean;
-  user: any;
+  loggedInUser: User;
   // greeting: string;
   authStatus: string;
 
@@ -21,6 +23,10 @@ export class AuthService {
     private store: Store<AppState>,
     private router: Router
   ) {
+
+    if (localStorage.getItem('loggedInUser')) {
+      this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    }
 
     Hub.listen('auth',(data) => {
       const { channel, payload } = data;
@@ -43,14 +49,14 @@ export class AuthService {
       switch (this.authStatus) {
         case 'signedIn':
           if (!authState.user) {
-            this.user = null;
+            this.store.dispatch(new SetLoggedInUser(null));
           } else {
             // Once the user is signed In, Set the token in localstorage as "idToken"
             localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
-            this.user = authState.user;
+            // this.loggedInUser = authState.user;
 
             // Update set with Loggedin User
-            this.store.dispatch(new CreateUser(this.user.attributes));
+            this.store.dispatch(new CreateUser(authState.user.attributes));
             // this.router.navigateByUrl(`/user/edit`);
           }
           break;
@@ -61,37 +67,14 @@ export class AuthService {
         case 'signedOut':
           localStorage.removeItem('idToken');
           this.store.dispatch(new SetLoggedInUser(null));
+          this.router.navigateByUrl('/');
       }
     });
 
-    // Authentication Management Logic
-    // this.amplifyService.authStateChange$
-    //   .subscribe(authState => {
-    //     console.log(authState);
-    //     console.log(authState.user.signInUserSession.idToken.jwtToken);
-    //     this.authStatus = authState.state;
-    //     this.signedIn = this.authStatus === 'signIn';
-    //     switch (this.authStatus) {
-    //       case 'signIn':
-    //         if (!authState.user) {
-    //           this.user = null;
-    //         } else {
-    //           // Once the user is signed In, Set the token in localstorage as "idToken"
-    //           localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
-    //           this.user = authState.user;
-    //           console.log(this.user.name);
-    //         }
-    //         break;
-
-    //       case 'signUp':
-    //         this.store.dispatch(new CreateUser(this.user.username));
-    //         break;
-
-    //       case 'signOut':
-    //         localStorage.removeItem('idToken');
-    //     }
-
-    //   });
+    this.store.select(selectLoggedInUser).subscribe((u: User) => {
+      localStorage.setItem('loggedInUser', JSON.stringify(u));
+      this.loggedInUser = u;
+    });
   }
 
 

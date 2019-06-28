@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../core/services/auth.service';
+import { AuthService } from '../services/auth.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-side-navbar',
@@ -47,7 +49,10 @@ export class SideNavbarComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public authService: AuthService
-    ) {}
+    public authService: AuthService,
+    public store: Store<AppState>
+    ) {
+      this.store
+    }
 
 }

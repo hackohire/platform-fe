@@ -18,11 +18,6 @@ export class DevApplicationService {
   ) { }
 
   createApplication(app): Observable<any> {
-    // console.log(app);
-    app = {
-      name: 'T',
-      // createdBy: ""
-    };
     return this.apollo.mutate(
       {
         mutation: gql`
@@ -31,6 +26,8 @@ export class DevApplicationService {
             {
               _id
               name
+              createdBy
+              description
             }
           }`,
         variables: {
@@ -40,10 +37,35 @@ export class DevApplicationService {
     ).pipe(
       switchMap((d: any) => {
         // console.log('check', d);
-        return [[d.data.createApplication]];
+        return [d.data.createApplication];
       }),
       catchError(e => of(e))
     );
-    // return of({});
+  }
+
+  getApplicationList(userId): Observable<any> {
+    return this.apollo.query(
+      {
+        query: gql`
+          query getApplications($userId: String) {
+            getApplications(userId: $userId)
+            {
+              _id
+              name,
+              description
+              createdBy
+            }
+          }`,
+        variables: {
+          'userId': userId,
+        }
+      }
+    ).pipe(
+      switchMap((d: any) => {
+        // console.log('check', d);
+        return [d.data.getApplications];
+      }),
+      catchError(e => of(e))
+    );
   }
 }

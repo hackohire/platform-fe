@@ -1,0 +1,15 @@
+<button mat-raised-button color="primary" (click)="openCreateAppDialog()">Create Application</button>
+<!-- <pre>
+    {{ myApplications$ | async | json }}
+</pre> -->
+<div class="row py-2" *ngIf="myApplications$ | async as apps">
+        <div class="col-sm-4 py-2" *ngFor="let app of apps">
+                <div class="card h-100 border-primary">
+                    <div class="card-body">
+                        <h3 class="card-title">{{app?.name}}</h3>
+                        <p class="card-text">{{app?.description}}</p>
+                        <!-- <a href="#" class="btn btn-outline-secondary">Outline</a> -->
+                    </div>
+                </div>
+            </div>
+</div>

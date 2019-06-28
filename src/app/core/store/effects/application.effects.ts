@@ -18,7 +18,17 @@ export class ApplicationEffects {
         map(action => action.payload),
         // tap(t => console.log(t)),
         switchMap((payload) => this.devApplicationService.createApplication(payload)),
+        tap(t => console.log(t)),
+        switchMap((app: Application[]) =>  of(new UpdateApplicationsList(app)))
+    );
+
+    @Effect()
+    getApplicationList$ = this._actions$.pipe(
+        ofType<CreateApplication>(EApplicationActions.GetApplications),
+        map(action => action.payload),
         // tap(t => console.log(t)),
+        switchMap((payload) => this.devApplicationService.getApplicationList(payload)),
+        tap(t => console.log(t)),
         switchMap((app: Application[]) =>  of(new UpdateApplicationsList(app)))
     );
 
