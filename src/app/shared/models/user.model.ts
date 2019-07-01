@@ -11,6 +11,7 @@ export interface User {
     github_url?: string;
     currentJobDetails?: CurrentJobDetails;
     programming_languages?: string[];
+    avatar: string;
 }
 
 interface CurrentJobDetails {

@@ -9,6 +9,7 @@ import { UpdateUser } from 'src/app/core/store/actions/user.actions';
 import { AuthService } from 'src/app/core/services/auth.service';
 import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips/typings/chip-input';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,9 +22,17 @@ export class UserProfileComponent implements OnInit {
   userProfileForm: FormGroup;
   loggedInUser: User;
   user$: Observable<User>;
+
+  // Profile Picture
+  // image: Base64;
+  s3BucketUrl = environment.s3BucketURL;
+  currentAvatarUrl: string;
+
+  get avatar() { return this.userProfileForm.get('avatar'); }
+
   constructor(
     private store: Store<AppState>,
-    public authService: AuthService
+    public authService: AuthService,
   ) {
 
     // if (this.loggedInUser && !this.loggedInUser.programming_languages) {
@@ -53,9 +62,13 @@ export class UserProfileComponent implements OnInit {
             companyLocation: new FormControl(this.loggedInUser && this.loggedInUser.currentJobDetails ?
               this.loggedInUser.currentJobDetails.companyLocation : '')
           }),
-          _id: new FormControl(this.loggedInUser ? this.loggedInUser._id : '')
-
+          _id: new FormControl(this.loggedInUser ? this.loggedInUser._id : ''),
+          avatar: new FormControl(this.loggedInUser && this.loggedInUser.avatar ? this.loggedInUser.avatar : '')
         });
+
+        if (this.avatar.value) {
+          this.currentAvatarUrl = this.s3BucketUrl + this.avatar.value;
+        }
       }
     });
   }
@@ -86,6 +99,12 @@ export class UserProfileComponent implements OnInit {
       this.loggedInUser.programming_languages.splice(index, 1);
     }
     controller.markAsDirty();
+  }
+
+  avatarUploaded(event) {
+    console.log(event);
+    this.avatar.setValue(event.key);
+    this.currentAvatarUrl = this.s3BucketUrl + event.key;
   }
 
 }

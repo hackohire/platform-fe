@@ -27,6 +27,7 @@ export class UserService {
           companyLocation
         }
         programming_languages
+        avatar
       }
     }`;
 
@@ -47,6 +48,7 @@ export class UserService {
           companyLocation
         }
         programming_languages
+        avatar
       }
     }`;
 

@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  graphql_url: 'http://localhost:3000/graphql'
+  graphql_url: 'http://localhost:3000/graphql',
+  s3BucketName: 'platformfile-dev',
+  s3BucketURL: 'https://platformfile-dev.s3.amazonaws.com/public/'
 };
 
 /*
