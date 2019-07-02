@@ -9,13 +9,19 @@ export function applicationReducers(
         case EApplicationActions.CreateApplication:
             return {
                 ...state,
-                application: action.payload
+                selectedApplication: action.payload
             };
 
         case EApplicationActions.UpdateApplicationsList:
             return {
                 ...state,
                 applications: action.payload
+            };
+
+        case EApplicationActions.SetSelectedApp:
+            return {
+                ...state,
+                selectedApplication: action.app
             };
 
         default:

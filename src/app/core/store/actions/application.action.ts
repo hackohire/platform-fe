@@ -4,7 +4,9 @@ import { Application } from 'src/app/shared/models/application.model';
 export enum EApplicationActions {
     CreateApplication = '[Application] Create Application',
     GetApplications = '[Application] Get Applications',
-    UpdateApplicationsList = '[Application] Update Applications List'
+    UpdateApplicationsList = '[Application] Update Applications List',
+    GetApplication = '[Application] Get Application',
+    SetSelectedApp = '[Application] Set Selected Application'
 }
 
 export class CreateApplication implements Action {
@@ -22,4 +24,15 @@ export class UpdateApplicationsList implements Action {
     constructor(public payload: Application[]) {}
 }
 
-export type ApplicationActions = CreateApplication | GetApplications | UpdateApplicationsList;
+export class GetApplication implements Action {
+    public readonly type = EApplicationActions.GetApplication;
+    constructor(public id: string) {}
+}
+
+export class SetSelectedApp implements Action {
+    public readonly type = EApplicationActions.SetSelectedApp;
+    constructor(public app: Application) {}
+}
+
+
+export type ApplicationActions = CreateApplication | GetApplications | UpdateApplicationsList | GetApplication | SetSelectedApp;

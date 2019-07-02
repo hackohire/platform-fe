@@ -18,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 export class MyApplicationsComponent implements OnInit {
 
   myApplications$: Observable<Application[]>;
+  userId: string;
 
   constructor(
     public dialog: MatDialog,
@@ -31,7 +32,8 @@ export class MyApplicationsComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       console.log(params);
-      this.store.dispatch(new GetApplications(params['id']));
+      this.userId = params['id'];
+      this.store.dispatch(new GetApplications(this.userId));
     });
 
   }

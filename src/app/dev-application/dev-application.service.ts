@@ -68,4 +68,30 @@ export class DevApplicationService {
       catchError(e => of(e))
     );
   }
+
+  getApplicationById(appId: string): Observable<any> {
+    return this.apollo.query(
+      {
+        query: gql`
+          query getApplicationById($appId: String) {
+            getApplicationById(appId: $appId)
+            {
+              _id
+              name,
+              description
+              createdBy
+            }
+          }`,
+        variables: {
+          'appId': appId,
+        }
+      }
+    ).pipe(
+      map((d: any) => {
+        // console.log('check', d);
+        return d.data.getApplicationById;
+      }),
+      catchError(e => of(e))
+    );
+  }
 }

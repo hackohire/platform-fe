@@ -2,11 +2,11 @@ import { Application } from 'src/app/shared/models/application.model';
 
 export interface ApplicationState {
     applications: Application[];
-    application: Application;
+    selectedApplication: Application;
 }
 
 export const initialApplicationState: ApplicationState = {
-    applications: null,
-    application: null
+    applications: [],
+    selectedApplication: null
 };
 

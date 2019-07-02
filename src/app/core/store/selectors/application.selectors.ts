@@ -8,3 +8,8 @@ export const selectApplicationList = createSelector(
     selectApplications,
     (state: ApplicationState) => state.applications
 );
+
+export const selectApplication = createSelector(
+    selectApplications,
+    (state: ApplicationState) => state.selectedApplication
+);
