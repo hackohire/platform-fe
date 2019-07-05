@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>PlatformFe</title>
@@ -12,9 +13,23 @@
 
   <!-- Pace js -->
   <link href="./assets/pace/themes/loading-bar.css" rel="stylesheet" />
+  <script>
+    window.paceOptions = {
+      document: true,
+      eventLag: true,
+      restartOnPushState: true,
+      restartOnRequestAfter: true,
+      ajax: {
+        trackMethods: ['POST', 'GET', 'DELETE', 'PUT', 'OPTIONS']
+      }
+    };
+  </script>
   <script src="./assets/pace/pace.min.js"></script>
+
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+
 </html>
