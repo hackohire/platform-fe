@@ -1,0 +1,13 @@
+{
+    "opportunity": {
+      "addOpportunity": { "permittedRoles": ["Developer"] } },
+      "created": {
+        "addRequirement": {"permittedRoles": ["ADMIN", "DEVELOPER"]}
+      },
+      "submitted": {
+        "addSolution": { "permittedRoles": ["ADMIN", "DEVELOPER"]}
+      },
+      "solved": {
+        "approveSolution": { "permittedRoles": ["ADMIN"]}
+      }
+}

@@ -19,6 +19,9 @@ import { ApolloLink } from 'apollo-link';
 import { ApplicationEffects } from './store/effects/application.effects';
 import { MaterialModule } from './material.module';
 import { environment } from 'src/environments/environment';
+import Auth from '@aws-amplify/auth';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { PermissionEvents } from './services/permisson-event.service';
 
 @NgModule({
   declarations: [],
@@ -36,9 +39,12 @@ import { environment } from 'src/environments/environment';
   ],
   providers: [
     AuthService,
-    AmplifyService
+    AmplifyService,
+    PermissionEvents
   ],
-  exports: [AmplifyAngularModule]
+  exports: [
+    AmplifyAngularModule
+  ]
 })
 export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
   // Looks for the module in the parent injector to see if it's already been loaded
@@ -49,9 +55,16 @@ export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
 
     const http = httpLink.create({uri: environment.graphql_url});
 
+    // Get Current Id Token
+    let  token = '';
+    Auth.currentSession().then((d: CognitoUserSession) => {
+      token = d.getIdToken().getJwtToken();
+    });
+
+
     const authLink = new ApolloLink((operation, forward) => {
       // Get the authentication token from local storage if it exists
-      const token = localStorage.getItem('idToken');
+      // const token = localStorage.getItem('idToken');
 
       // Use the setContext method to set the HTTP headers.
       operation.setContext({
