@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../core/material.module';
+import { CanAccessDirective } from './directives/appcanaaccess.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CanAccessDirective
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -14,7 +17,8 @@ import { MaterialModule } from '../core/material.module';
   exports: [
     ReactiveFormsModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    CanAccessDirective
   ]
 })
 export class SharedModule { }
