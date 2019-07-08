@@ -1,5 +1,66 @@
-<p>
-  application-details works!
-</p>
+<!-- {{selectedApplication$ | async | json}} -->
 
-{{selectedApplication$ | async | json}}
+<form [formGroup]="applicationDetailsForm" class="profile-form" *ngIf="(selectedApplication$ | async) as app"
+  (ngSubmit)="updateApplication()">
+
+  <mat-form-field class="field-full-width">
+    <input matInput formControlName="uuid" disabled placeholder="App Secret">
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput formControlName="name" disabled placeholder="Name">
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <textarea matInput formControlName="description" disabled placeholder="Description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput formControlName="application_url" disabled placeholder="Application Link">
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput formControlName="privacy_policy_url" disabled placeholder="Privacy Policy Link">
+  </mat-form-field>
+
+  <div class="row">
+    <div class="col-md-5"><b>App Status:</b> {{app?.status}}</div>
+    <div class="col-md-7"><b>App Id:</b> {{app?._id}}</div>
+  </div>
+
+  <div>
+    <button class="m-1" mat-raised-button color="primary">Update Application</button>
+
+    <div [ngSwitch]="app?.status">
+      <div *ngSwitchCase="'Created'">
+          <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button>
+          <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+      </div>
+
+      <div *ngSwitchCase="'Submitted'">
+          <!-- <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button> -->
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+      </div>
+
+      <div *ngSwitchCase="'Approved'">
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Published')">Publish App</button>
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+      </div>
+
+      <div *ngSwitchCase="'Rejected'">
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Resubmit</button>
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+      </div>
+
+      <div *ngSwitchCase="'Published'">
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Approved')">Unpublish</button>
+          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+      </div>
+    
+      
+    </div>
+    
+  </div>
+
+
+</form>

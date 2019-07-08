@@ -3,7 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { AuthService } from '../../services/auth.service';
 import { AppState } from '../state/app.state';
-import { CreateApplication, EApplicationActions, UpdateApplicationsList, GetApplication, SetSelectedApp } from '../actions/application.action';
+import { CreateApplication, EApplicationActions, UpdateApplicationsList, GetApplication, SetSelectedApp, UpdateApplication } from '../actions/application.action';
 import { switchMap, map, tap, filter, withLatestFrom } from 'rxjs/operators';
 import { DevApplicationService } from 'src/app/dev-application/dev-application.service';
 import { Application } from 'src/app/shared/models/application.model';
@@ -56,6 +56,18 @@ export class ApplicationEffects {
         switchMap((app: Application) =>  of(new SetSelectedApp(app)))
     );
 
+    @Effect()
+    updateApplication$ = this._actions$.pipe(
+        ofType<UpdateApplication>(EApplicationActions.UpdateApplication),
+        map(action => action.app),
+        switchMap((payload) => this.devApplicationService.updateApplication(payload)),
+        withLatestFrom(this._store.pipe(select(selectApplicationList))),
+        switchMap(([app, appList]) => {
+            const i = appList.findIndex( a => app._id === a._id);
+            appList[i] = app;
+            return of(new SetSelectedApp(app));
+        })
+    );
 
     constructor(
         private _actions$: Actions,

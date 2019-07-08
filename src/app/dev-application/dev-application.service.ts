@@ -13,6 +13,17 @@ import { Application } from '../shared/models/application.model';
 })
 export class DevApplicationService {
 
+  queryFileds = `{
+    _id
+    name,
+    description
+    createdBy
+    uuid
+    application_url
+    privacy_policy_url
+    status
+  }`;
+
   constructor(
     private apollo: Apollo
   ) { }
@@ -23,12 +34,7 @@ export class DevApplicationService {
         mutation: gql`
           mutation createApplication($app: ApplicationInput) {
             createApplication(application: $app)
-            {
-              _id
-              name
-              createdBy
-              description
-            }
+            ${this.queryFileds}
           }`,
         variables: {
           'app': app,
@@ -49,12 +55,7 @@ export class DevApplicationService {
         query: gql`
           query getApplications($userId: String) {
             getApplications(userId: $userId)
-            {
-              _id
-              name,
-              description
-              createdBy
-            }
+            ${this.queryFileds}
           }`,
         variables: {
           'userId': userId,
@@ -75,12 +76,7 @@ export class DevApplicationService {
         query: gql`
           query getApplicationById($appId: String) {
             getApplicationById(appId: $appId)
-            {
-              _id
-              name,
-              description
-              createdBy
-            }
+            ${this.queryFileds}
           }`,
         variables: {
           'appId': appId,
@@ -90,6 +86,28 @@ export class DevApplicationService {
       map((d: any) => {
         // console.log('check', d);
         return d.data.getApplicationById;
+      }),
+      catchError(e => of(e))
+    );
+  }
+
+  updateApplication(application: Application): Observable<any> {
+
+    return this.apollo.mutate(
+      {
+        mutation: gql`
+          mutation updateApplication($app: ApplicationInput) {
+            updateApplication(application: $app)
+            ${this.queryFileds}
+          }`,
+        variables: {
+          'app': application,
+        }
+      }
+    ).pipe(
+      map((d: any) => {
+        // console.log('check', d);
+        return d.data.updateApplication;
       }),
       catchError(e => of(e))
     );
