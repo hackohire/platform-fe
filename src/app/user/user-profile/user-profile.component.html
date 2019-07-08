@@ -2,7 +2,7 @@
 
 <form [formGroup]="userProfileForm" class="profile-form" *ngIf="(user$ | async) as user" (ngSubmit)="updateUser()">
     <div class="profile-picture">
-        <label>Profile Picture</label>
+        <!-- <label>Profile Picture</label> -->
         <app-user-avatar [path]="'avatar'" [url]="currentAvatarUrl" (uploaded)="avatarUploaded($event)">
         </app-user-avatar>
     </div>
