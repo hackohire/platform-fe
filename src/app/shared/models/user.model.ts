@@ -11,7 +11,14 @@ export interface User {
     github_url?: string;
     currentJobDetails?: CurrentJobDetails;
     programming_languages?: string[];
-    avatar: string;
+    avatar?: string;
+    roles?: Roles[];
+}
+
+
+enum Roles {
+    Developer,
+    Admin
 }
 
 interface CurrentJobDetails {

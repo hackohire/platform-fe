@@ -28,6 +28,7 @@ export class UserService {
         }
         programming_languages
         avatar
+        roles
       }
     }`;
 
@@ -49,6 +50,7 @@ export class UserService {
         }
         programming_languages
         avatar
+        roles
       }
     }`;
 
