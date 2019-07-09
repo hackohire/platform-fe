@@ -1,0 +1,41 @@
+<button *appCanAccess="['application', 'addApplication']" mat-raised-button color="primary" (click)="openCreateAppDialog()">Create Application</button>
+<!-- <pre>
+    {{ myApplications$ | async | json }}
+</pre> -->
+<ng-container *appCanAccess="['application', 'myApplications']">
+    <div class="row py-2" *ngIf="applications$ | async as apps">
+        <div class="col-sm-4 py-2" *ngFor="let app of apps">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <h3 class="card-title">{{app?.name}}</h3>
+                    <p class="card-text">{{app?.description}}</p>
+                    <!-- {{app._id}} -->
+                    <a [routerLink]="['./', app._id]" class="btn btn-outline-secondary">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *appCanAccess="['application', 'allApplications']">
+    <div class="row py-2" *ngIf="applications$ | async as apps">
+        <div class="col-sm-4 py-2" *ngFor="let app of apps">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <h3 class="card-title">{{app?.name}}</h3>
+                    <p class="card-text">{{app?.description}}</p>
+                    <!-- {{app._id}} -->
+                    <a [routerLink]="['./', app._id]" class="btn btn-outline-secondary">Edit</a>
+
+                    <ng-container *ngIf="app.status === appStatus?.Submitted">
+                        <a class="btn btn-outline-secondary" (click)="updateApplication(app, appStatus.Approved)">Approve</a>
+                        <a class="btn btn-outline-secondary" (click)="updateApplication(app, appStatus.Rejected)">Reject</a>
+                    </ng-container>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+

@@ -2,11 +2,21 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false && authService?.signedIn">
     <mat-toolbar>Platform</mat-toolbar>
-    <mat-nav-list>
+    <mat-nav-list *ngIf="loggedInUser$ | async">
       <a mat-list-item [routerLink]="['/user/edit']" routerLinkActive="active-list-item">Edit Profile</a>
-      <a mat-list-item [routerLink]="['/application/my-applications/', authService?.loggedInUser?._id ? authService?.loggedInUser?._id : '']" routerLinkActive="active-list-item">My Applications</a>
+
+      <a mat-list-item
+        *appCanAccess="['application', 'myApplications']"
+        [routerLink]="['/application']"
+        routerLinkActive="active-list-item">My Applications</a>
+
+      <a *appCanAccess="['application', 'allApplications']" mat-list-item
+        [routerLink]="['/application']"
+        routerLinkActive="active-list-item">Applications List</a>
+
+      
     </mat-nav-list>
-  </mat-sidenav>
+</mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer?.toggle()"
@@ -19,7 +29,7 @@
 
     <amplify-authenticator [signUpConfig]="signUpConfig" [usernameAttributes]="usernameAttributes">
     </amplify-authenticator>
-    <div>
+    <div *ngIf="loggedInUser$ | async">
       <router-outlet></router-outlet>
     </div>
 

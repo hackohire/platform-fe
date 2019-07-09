@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/state/app.state';
+import { User } from 'src/app/shared/models/user.model';
+import { selectLoggedInUser } from '../store/selectors/user.selector';
 
 @Component({
   selector: 'app-side-navbar',
@@ -12,7 +14,7 @@ import { AppState } from '../store/state/app.state';
   styleUrls: ['./side-navbar.component.scss']
 })
 export class SideNavbarComponent {
-
+  loggedInUser$: Observable<User>;
   usernameAttributes = 'email';
   signUpConfig = {
     // header: 'My Customized Sign Up',
@@ -52,7 +54,7 @@ export class SideNavbarComponent {
     public authService: AuthService,
     public store: Store<AppState>
     ) {
-      this.store
+      this.loggedInUser$ = this.store.select(selectLoggedInUser);
     }
 
 }
