@@ -11,13 +11,13 @@ export interface Application {
     status?: ApplicationStatus;
 }
 
-enum ApplicationStatus {
-    Created,
-    Submitted,
-    Approved,
-    Rejected,
-    Archieved,
-    Deleted,
-    Published,
-    Unpublished
+export enum ApplicationStatus {
+    Created = 'Created',
+    Submitted = 'Submitted',
+    Approved = 'Approved',
+    Rejected = 'Rejected',
+    Archieved = 'Archieved',
+    Deleted = 'Deleted',
+    Published = 'Published',
+    Unpublished = 'Unpublished'
 }
