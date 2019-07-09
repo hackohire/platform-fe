@@ -22,6 +22,19 @@ import { environment } from 'src/environments/environment';
 import Auth from '@aws-amplify/auth';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import { PermissionEvents } from './services/permisson-event.service';
+import { EPlatformActions } from './store/actions/app.actions';
+
+export function clearState(reducer) {
+  return function (state, action) {
+
+    if (action.type === EPlatformActions.ResetPlatFormState) {
+      state = undefined;
+    }
+
+    return reducer(state, action);
+  };
+}
+
 
 @NgModule({
   declarations: [],
@@ -29,7 +42,7 @@ import { PermissionEvents } from './services/permisson-event.service';
     CommonModule,
     HttpClientModule,
     AmplifyAngularModule,
-    StoreModule.forRoot(appReducesrs()),
+    StoreModule.forRoot(appReducesrs(), { metaReducers: [clearState] }),
     EffectsModule.forRoot([UserEffects, ApplicationEffects]),
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     StoreDevtoolsModule.instrument(),
@@ -57,32 +70,29 @@ export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
 
     // Get Current Id Token
     let token = '';
-    Auth.currentSession().then(async (d: CognitoUserSession) => {
-      token = await d.getIdToken().getJwtToken();
-      const authLink = new ApolloLink((operation, forward) => {
-        // Get the authentication token from local storage if it exists
-        // const token = localStorage.getItem('idToken');
+    const authLink = new ApolloLink((operation, forward) => {
+      // Get the authentication token from local storage if it exists
+      // const token = localStorage.getItem('idToken');
 
 
-
-        // Use the setContext method to set the HTTP headers.
-        operation.setContext({
-          headers: {
-            Authorization: token ? token : ''
-          }
-        });
-        // Call the next link in the middleware chain.
-        return forward(operation);
+      token = localStorage.getItem('idToken');
+      // Use the setContext method to set the HTTP headers.
+      operation.setContext({
+        headers: {
+          Authorization: token ? token : ''
+        }
       });
-
-      apollo.create({
-        link: authLink.concat(http),
-        cache: new InMemoryCache({
-          addTypename: false
-        }),
-      });
-
+      // Call the next link in the middleware chain.
+      return forward(operation);
     });
+
+    apollo.create({
+      link: authLink.concat(http),
+      cache: new InMemoryCache({
+        addTypename: false
+      }),
+    });
+
     // apollo.create({
     //   link: httpLink.create({ uri: 'http://localhost:3000/graphql' }),
     //   cache: new InMemoryCache(),

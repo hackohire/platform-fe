@@ -12,6 +12,8 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk/clients/all';
 import { Auth } from 'aws-amplify';
 import { AuthState } from 'aws-amplify-angular/dist/src/providers';
 import { CognitoUser } from '@aws-amplify/auth';
+import { ResetPlatFormState } from '../store/actions/app.actions';
+import { Apollo } from 'apollo-angular';
 
 
 @Injectable()
@@ -25,7 +27,8 @@ export class AuthService {
     private amplifyService: AmplifyService,
     private userService: UserService,
     private store: Store<AppState>,
-    private router: Router
+    private router: Router,
+    private apollo: Apollo
   ) {
 
     if (localStorage.getItem('loggedInUser')) {
@@ -56,7 +59,7 @@ export class AuthService {
             this.store.dispatch(new SetLoggedInUser(null));
           } else {
             // Once the user is signed In, Set the token in localstorage as "idToken"
-            // localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
+            localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
             // this.loggedInUser = authState.user;
 
             // this.router.navigateByUrl(`/user/edit`);
@@ -98,6 +101,7 @@ export class AuthService {
                 } else {
                   this.store.dispatch(new CreateUser(userToBeSent));
                 }
+                localStorage.setItem('idToken', user.signInUserSession.idToken.jwtToken);
 
               })
                 .catch(err => console.log(err));
@@ -110,8 +114,10 @@ export class AuthService {
 
         case 'signedOut':
           localStorage.clear();
-          this.store.dispatch(new SetLoggedInUser(null));
-          this.router.navigateByUrl('/');
+          // this.store.dispatch(new SetLoggedInUser(null));
+          this.store.dispatch(new ResetPlatFormState());
+          this.apollo.getClient().resetStore();
+          this.router.navigate(['/']);
       }
     });
 
