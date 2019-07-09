@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
   user$ = this.store.pipe(select(selectSelectedUser));
 
   constructor(
-    private amplifyService: AmplifyService,
     private store: Store<AppState>
   ) {
 

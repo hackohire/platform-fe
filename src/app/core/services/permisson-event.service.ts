@@ -19,7 +19,7 @@ export class PermissionEvents {
   // returns a boolean observable
   public checkAuthorization(path: any): Observable<boolean> {
     // we are loading the roles only once
-   if (!this.userRoles) {
+   if (!this.userRoles || !this.userRoles.size) {
       return this.store.pipe(
         select(selectLoggedInUser),
         map((currentUser: User) => currentUser ? currentUser.roles : []),

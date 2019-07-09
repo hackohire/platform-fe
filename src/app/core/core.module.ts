@@ -31,7 +31,7 @@ import { PermissionEvents } from './services/permisson-event.service';
     AmplifyAngularModule,
     StoreModule.forRoot(appReducesrs()),
     EffectsModule.forRoot([UserEffects, ApplicationEffects]),
-    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
+    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     StoreDevtoolsModule.instrument(),
     ApolloModule,
     HttpLinkModule,
@@ -53,36 +53,36 @@ export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
 
     // Apollo Server Configuration
 
-    const http = httpLink.create({uri: environment.graphql_url});
+    const http = httpLink.create({ uri: environment.graphql_url });
 
     // Get Current Id Token
-    let  token = '';
-    Auth.currentSession().then((d: CognitoUserSession) => {
-      token = d.getIdToken().getJwtToken();
-    });
+    let token = '';
+    Auth.currentSession().then(async (d: CognitoUserSession) => {
+      token = await d.getIdToken().getJwtToken();
+      const authLink = new ApolloLink((operation, forward) => {
+        // Get the authentication token from local storage if it exists
+        // const token = localStorage.getItem('idToken');
 
 
-    const authLink = new ApolloLink((operation, forward) => {
-      // Get the authentication token from local storage if it exists
-      // const token = localStorage.getItem('idToken');
 
-      // Use the setContext method to set the HTTP headers.
-      operation.setContext({
+        // Use the setContext method to set the HTTP headers.
+        operation.setContext({
           headers: {
-              Authorization: token ? `${token}` : ''
+            Authorization: token ? token : ''
           }
+        });
+        // Call the next link in the middleware chain.
+        return forward(operation);
       });
 
-      // Call the next link in the middleware chain.
-      return forward(operation);
+      apollo.create({
+        link: authLink.concat(http),
+        cache: new InMemoryCache({
+          addTypename: false
+        }),
+      });
+
     });
-
-    apollo.create({
-      link: authLink.concat(http),
-      cache: new InMemoryCache(),
-    });
-
-
     // apollo.create({
     //   link: httpLink.create({ uri: 'http://localhost:3000/graphql' }),
     //   cache: new InMemoryCache(),

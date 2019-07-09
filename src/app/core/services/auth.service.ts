@@ -10,6 +10,8 @@ import { selectLoggedInUser } from '../store/selectors/user.selector';
 import { User } from 'src/app/shared/models/user.model';
 import { CognitoIdentityServiceProvider } from 'aws-sdk/clients/all';
 import { Auth } from 'aws-amplify';
+import { AuthState } from 'aws-amplify-angular/dist/src/providers';
+import { CognitoUser } from '@aws-amplify/auth';
 
 
 @Injectable()
@@ -42,10 +44,11 @@ export class AuthService {
       }
     });
 
-    this.amplifyService.authStateChange$.subscribe(authState => {
+    this.amplifyService.authStateChange$.subscribe((authState: AuthState) => {
       console.log('authState', authState);
 
       this.authStatus = authState.state;
+      const user: CognitoUser = authState.user;
       this.signedIn = this.authStatus === 'signedIn';
       switch (this.authStatus) {
         case 'signedIn':
@@ -68,13 +71,18 @@ export class AuthService {
                 'credentials': credentials,
                 region: 'us-east-1'
               });
-              const cognitoIdentityServiceProvider = await new CognitoIdentityServiceProvider(config);
-              const params = {
-                GroupName: 'Developer',
-                UserPoolId: authState.user.pool.userPoolId,
-                Username: authState.user.username,
-              };
-              await cognitoIdentityServiceProvider.adminAddUserToGroup(params).promise();
+
+              if ( !user.getSignInUserSession().getIdToken().payload['cognito:groups'] ||
+                  (this.getUserFromLocalStorage() && !this.getUserFromLocalStorage().roles.length)
+              ) {
+                const cognitoIdentityServiceProvider = await new CognitoIdentityServiceProvider(config);
+                const params = {
+                  GroupName: 'Developer',
+                  UserPoolId: authState.user.pool.userPoolId,
+                  Username: authState.user.username,
+                };
+                await cognitoIdentityServiceProvider.adminAddUserToGroup(params).promise();
+              }
 
               await Auth.currentAuthenticatedUser({
                 bypassCache: true
@@ -101,13 +109,18 @@ export class AuthService {
           break;
 
         case 'signedOut':
+          localStorage.clear();
           this.store.dispatch(new SetLoggedInUser(null));
           this.router.navigateByUrl('/');
       }
     });
 
     this.store.select(selectLoggedInUser).subscribe((u: User) => {
-      this.setUserForLocalStorage(u);
+      if (u) {
+        this.setUserForLocalStorage(u);
+      } else {
+        // localStorage.clear();
+      }
       this.loggedInUser = u;
     });
   }
