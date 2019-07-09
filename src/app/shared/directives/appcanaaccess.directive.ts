@@ -13,9 +13,11 @@ export class CanAccessDirective implements OnInit, OnDestroy {
     constructor(private templateRef: TemplateRef<any>,
                 private viewContainer: ViewContainerRef,
                 private permissionEvents: PermissionEvents) {
+                    // console.log(this.appCanAccess);
     }
 
     ngOnInit(): void {
+        // console.log(this.appCanAccess);
         this.applyPermission();
     }
 
@@ -24,7 +26,7 @@ export class CanAccessDirective implements OnInit, OnDestroy {
             .checkAuthorization(this.appCanAccess)
             .subscribe(authorized => {
                 if (authorized) {
-                    this.viewContainer.clear();
+                    // this.viewContainer.clear();
                     this.viewContainer.createEmbeddedView(this.templateRef);
                 } else {
                     this.viewContainer.clear();
