@@ -26,7 +26,7 @@ export class CanAccessDirective implements OnInit, OnDestroy {
             .checkAuthorization(this.appCanAccess)
             .subscribe(authorized => {
                 if (authorized) {
-                    // this.viewContainer.clear();
+                    this.viewContainer.clear();
                     this.viewContainer.createEmbeddedView(this.templateRef);
                 } else {
                     this.viewContainer.clear();
