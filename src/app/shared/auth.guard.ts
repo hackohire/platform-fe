@@ -1,24 +1,35 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanLoad, Route, UrlSegment } from '@angular/router';
-import { Observable, } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from '../core/store/state/app.state';
-import { selectLoggedInUser } from '../core/store/selectors/user.selector';
-import { map } from 'rxjs/operators';
+import { CanLoad, Route, UrlSegment, Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { User } from './models/user.model';
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from '../core/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanLoad {
-  canLoad(route: Route, segments: UrlSegment[]): boolean | Observable<boolean> | Promise<boolean> {
-    return this.store.select(selectLoggedInUser).pipe(
-      map(u => u ? true : false)
-    );
-    // return true;
-    // throw new Error("Method not implemented.");
+export class AuthGuard implements CanActivate {
+  loggedInUser: User;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+    ) {
+
   }
 
-  constructor(private store: Store<AppState>) {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+              boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const redirectUrl = route['_routerState']['url'];
+    this.authService.setRedirectURI(redirectUrl);
+
+
+    if (this.loggedInUser) {
+      return true;
+    }
+
+    return false;
 
   }
 

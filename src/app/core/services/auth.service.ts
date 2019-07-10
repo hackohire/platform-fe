@@ -23,6 +23,8 @@ export class AuthService {
   // greeting: string;
   authStatus: string;
 
+  redirectURL: string;
+
   constructor(
     private amplifyService: AmplifyService,
     private userService: UserService,
@@ -62,8 +64,6 @@ export class AuthService {
             localStorage.setItem('idToken', authState.user.signInUserSession.idToken.jwtToken);
             // this.loggedInUser = authState.user;
 
-            // this.router.navigateByUrl(`/user/edit`);
-
             // Add registered user by default in the 'Developers' group in userpool
             let config = null;
 
@@ -75,8 +75,8 @@ export class AuthService {
                 region: 'us-east-1'
               });
 
-              if ( !user.getSignInUserSession().getIdToken().payload['cognito:groups'] ||
-                  (this.getUserFromLocalStorage() && !this.getUserFromLocalStorage().roles.length)
+              if (!user.getSignInUserSession().getIdToken().payload['cognito:groups'] ||
+                (this.getUserFromLocalStorage() && !this.getUserFromLocalStorage().roles.length)
               ) {
                 const cognitoIdentityServiceProvider = await new CognitoIdentityServiceProvider(config);
                 const params = {
@@ -89,7 +89,7 @@ export class AuthService {
 
               await Auth.currentAuthenticatedUser({
                 bypassCache: true
-              }).then((user) => {
+              }).then( (user) => {
                 // console.log(user);
                 // Update set with Loggedin User
                 const userToBeSent: User = user.attributes;
@@ -105,6 +105,7 @@ export class AuthService {
 
               })
                 .catch(err => console.log(err));
+
             });
           }
           break;
@@ -117,13 +118,23 @@ export class AuthService {
           // this.store.dispatch(new SetLoggedInUser(null));
           this.store.dispatch(new ResetPlatFormState());
           this.apollo.getClient().resetStore();
-          this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       }
     });
 
     this.store.select(selectLoggedInUser).subscribe((u: User) => {
       if (u) {
         this.setUserForLocalStorage(u);
+
+        // If the redirect url is there, redirect the user
+        if (this.redirectURL) {
+          this.router.navigateByUrl(this.redirectURL).then(d => {
+            if (d) {
+              this.redirectURL = '';
+            }
+          });
+        }
+
       } else {
         // localStorage.clear();
       }
@@ -138,5 +149,10 @@ export class AuthService {
   getUserFromLocalStorage() {
     const loggedInUser = localStorage.getItem('loggedInUser');
     return loggedInUser ? JSON.parse(loggedInUser) : '';
+  }
+
+  // Set the redirect URL for user to be redirected after login
+  setRedirectURI(url: string) {
+    this.redirectURL = url;
   }
 }
