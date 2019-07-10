@@ -39,7 +39,9 @@ export class ApplicationsComponent implements OnInit {
     // });
 
     this.store.select(selectLoggedInUser).subscribe((user) => {
-      this.store.dispatch(new GetApplications(user._id));
+      if (user) {
+        this.store.dispatch(new GetApplications(user._id));
+      }
     });
 
   }
