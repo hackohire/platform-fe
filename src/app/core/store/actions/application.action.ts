@@ -37,7 +37,7 @@ export class SetSelectedApp implements Action {
 
 export class UpdateApplication implements Action {
     public readonly type = EApplicationActions.UpdateApplication;
-    constructor(public app: Application) {}
+    constructor(public app: Application, notifyAdmin?: boolean) {}
 }
 
 

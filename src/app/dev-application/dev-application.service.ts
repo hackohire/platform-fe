@@ -91,17 +91,18 @@ export class DevApplicationService {
     );
   }
 
-  updateApplication(application: Application): Observable<any> {
+  updateApplication(application: Application, notifyAdmin?: boolean): Observable<any> {
 
     return this.apollo.mutate(
       {
         mutation: gql`
-          mutation updateApplication($app: ApplicationInput) {
-            updateApplication(application: $app)
+          mutation updateApplication($app: ApplicationInput, $notifyAdmin: Boolean) {
+            updateApplication(application: $app, notifyAdmin: $notifyAdmin)
             ${this.queryFileds}
           }`,
         variables: {
           'app': application,
+          'notifyAdmin': notifyAdmin ? notifyAdmin : false
         }
       }
     ).pipe(

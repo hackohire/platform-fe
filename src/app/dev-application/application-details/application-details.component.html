@@ -32,30 +32,41 @@
     <button class="m-1" mat-raised-button color="primary">Update Application</button>
 
     <div [ngSwitch]="app?.status">
-      <div *ngSwitchCase="'Created'">
-          <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button>
-          <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
-      </div>
+      <ng-container *appCanAccess="['application', 'submitApplication']">
+        <div *ngSwitchCase="'Created'">
+            <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button>
+            <button class="m-1" mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+        </div>
+  
+        <div *ngSwitchCase="'Submitted'">
+            <!-- <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button> -->
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+        </div>
+  
+        <div *ngSwitchCase="'Approved'">
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Published')">Publish App</button>
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+        </div>
+  
+        <div *ngSwitchCase="'Rejected'">
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted', true)">Resubmit</button>
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+        </div>
+  
+        <div *ngSwitchCase="'Published'">
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Approved')">Unpublish</button>
+            <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
+        </div>
+      </ng-container>
 
-      <div *ngSwitchCase="'Submitted'">
-          <!-- <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Submit App</button> -->
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
-      </div>
-
-      <div *ngSwitchCase="'Approved'">
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Published')">Publish App</button>
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
-      </div>
-
-      <div *ngSwitchCase="'Rejected'">
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Submitted')">Resubmit</button>
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
-      </div>
-
-      <div *ngSwitchCase="'Published'">
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Approved')">Unpublish</button>
-          <button mat-raised-button color="primary" type="button" (click)="updateApplication('Deleted')">Delete App</button>
-      </div>
+      <ng-container *appCanAccess="['application', 'approveApplication']">
+          <div *ngSwitchCase="'Submitted'">
+              <button mat-raised-button color="primary" type="button" (click)="updateApplication('Approved')">Approve</button>
+              <button mat-raised-button color="primary" type="button" (click)="updateApplication('Rejected')">Reject</button>
+          </div>
+      </ng-container>
+      
+    
     
       
     </div>

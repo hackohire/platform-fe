@@ -57,11 +57,11 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  updateApplication(appStatus?: string) {
+  updateApplication(appStatus?: string, notifyAdmin?: boolean) {
     if (appStatus) {
       this.applicationDetailsForm.get('status').setValue(appStatus);
     }
-    this.store.dispatch(new UpdateApplication(this.applicationDetailsForm.value));
+    this.store.dispatch(new UpdateApplication(this.applicationDetailsForm.value, notifyAdmin));
   }
 
 }
