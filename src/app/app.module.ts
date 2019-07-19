@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideNavbarComponent } from './core/side-navbar/side-navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -23,6 +24,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     SharedModule,
     BrowserAnimationsModule,
     LayoutModule,
+    FlexLayoutModule
   ],
   providers: [
   ],

@@ -1,7 +1,7 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
-import { AmplifyAngularModule, AmplifyService, AmplifyModules } from 'aws-amplify-angular';
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 
 import { EnsureModuleLoadedOnlyOnceGuard } from './guards/ensure-module-loaded-only-once.guard';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -19,13 +19,11 @@ import { ApolloLink } from 'apollo-link';
 import { ApplicationEffects } from './store/effects/application.effects';
 import { MaterialModule } from './material.module';
 import { environment } from 'src/environments/environment';
-import Auth from '@aws-amplify/auth';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import { PermissionEvents } from './services/permisson-event.service';
 import { EPlatformActions } from './store/actions/app.actions';
 
 export function clearState(reducer) {
-  return function (state, action) {
+  return (state, action) => {
 
     if (action.type === EPlatformActions.ResetPlatFormState) {
       state = undefined;
@@ -65,17 +63,15 @@ export class CoreModule extends EnsureModuleLoadedOnlyOnceGuard {
     super(parentModule);
 
     // Apollo Server Configuration
-
     const http = httpLink.create({ uri: environment.graphql_url });
 
-    // Get Current Id Token
     let token = '';
     const authLink = new ApolloLink((operation, forward) => {
+
+
       // Get the authentication token from local storage if it exists
-      // const token = localStorage.getItem('idToken');
-
-
       token = localStorage.getItem('idToken');
+
       // Use the setContext method to set the HTTP headers.
       operation.setContext({
         headers: {

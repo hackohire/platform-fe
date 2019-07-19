@@ -28,7 +28,8 @@ export class UserService {
         }
         programming_languages
         avatar
-        roles
+        roles,
+        applications
       }
     }`;
 
@@ -51,6 +52,7 @@ export class UserService {
         programming_languages
         avatar
         roles
+        applications
       }
     }`;
 
@@ -64,7 +66,7 @@ export class UserService {
             getUsers
             {
               _id,
-              name
+              name,
             }
           }`
       }

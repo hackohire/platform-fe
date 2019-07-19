@@ -1,3 +1,5 @@
+import { Application } from './application.model';
+
 export interface User {
     _id?: string;
     email: string;
@@ -13,12 +15,14 @@ export interface User {
     programming_languages?: string[];
     avatar?: string;
     roles?: Roles[];
+    applications: Application[];
 }
 
 
 enum Roles {
-    Developer,
-    Admin
+    Developer = 'Developer',
+    Admin = 'Admin',
+    User = 'User'
 }
 
 interface CurrentJobDetails {
